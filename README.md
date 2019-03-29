@@ -1,8 +1,13 @@
 # EvoTrees
 
-> This is the R package wrapping EvoTrees.jl, a pure Juila tree boosting library. 
+> This is the R package wrapping EvoTrees.jl, a pure Julia tree boosting library. 
 
 # Getting started
+
+EvoTrees.jl need first to be installed and available from main julia environment. 
+Then, install package with: `devtools::install_github("Evovest/EvoTrees")`.
+
+# Example
 
 ```
 params <- set_params(loss = "linear", nrounds = 100)

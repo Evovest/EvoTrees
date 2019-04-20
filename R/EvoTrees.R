@@ -10,9 +10,8 @@ set_params <- function(loss="linear",
                        rowsample=1.0,
                        colsample=1.0) {
 
-  loss <- JuliaCall::julia_eval(paste0(":", loss))
   params <- JuliaCall::julia_call("Params",
-                                  loss,
+                                  as.symbol(loss),
                                   as.integer(nrounds),
                                   lambda,
                                   gamma,
@@ -27,16 +26,40 @@ set_params <- function(loss="linear",
 
 #' Train an EvoTree model
 #' @export
-evo_train <- function(data_train=1, target_train=1, params=set_params()) {
-  model <- JuliaCall::julia_call("grow_gbtree", data_train, target_train, params, need_return = "Julia")
+evo_train <- function(data_train, target_train, params=set_params(), ...) {
+  params <- do.call(set_params, params)
+  model <- JuliaCall::julia_call("grow_gbtree", data_train, target_train, params, ..., need_return = "Julia")
   return(model)
 }
 
+#' Get model best iter and eval metric
+#' @export
+get_metric <- function(model) {
+  metric <- JuliaCall::field(model, "metric")
+  best_iter <- JuliaCall::field(metric, "iter")
+  best_score <- JuliaCall::field(metric, "metric")
+  return(list(best_iter = best_iter, best_score = best_score))
+}
+
+#' Get model best iter and eval metric
+#' @export
+best_iter.JuliaObject <- function(model) {
+  metric <- JuliaCall::field(model, "metric")
+  best_iter <- JuliaCall::field(metric, "iter")
+  return(best_iter)
+}
+
+#' Get model best iter and eval metric
+#' @export
+best_score.JuliaObject <- function(model) {
+  metric <- JuliaCall::field(model, "metric")
+  best_score <- JuliaCall::field(metric, "metric")
+  return(best_score)
+}
 
 #' Get prediction from an EvoTree model
 #' @export
-evo_predict <- function(model, data) {
+predict.JuliaObject <- function(model, data) {
   pred <- JuliaCall::julia_call("predict", model, data, need_return = "R")
   return(pred)
 }
-

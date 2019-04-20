@@ -1,29 +1,39 @@
-EvoTrees
-================
+---
+title: "EvoTrees"
+output: github_document
+---
 
-> R package wrapping EvoTrees.jl, a pure Julia tree boosting library.
+> R package wrapping EvoTrees.jl, a pure Julia tree boosting library. 
 
 # Installation
 
-EvoTrees.jl needs first to be installed and available from main julia
-environment. Then, install EvoTree R package with:
-`devtools::install_github("Evovest/EvoTrees")`.
+EvoTrees.jl needs first to be installed and available from main julia environment.
+Then, install EvoTree R package with: `devtools::install_github("Evovest/EvoTrees")`.
 
 # Parameters
 
-  - loss: {“linear”,“logistic”}
-  - nrounds: 10L
-  - lambda: 0.0
-  - gamma: 0.0
-  - eta: 0.1
-  - max\_depth: integer, default 5L
-  - min\_weight: float \>= 0 default=1.0,
-  - rowsample: float \[0,1\] default=1.0
-  - colsample: float \[0,1\] default=1.0
+- loss: {"linear","logistic"}
+- nrounds: 10L
+- lambda: 0.0
+- gamma: 0.0
+- eta: 0.1
+- max_depth: integer, default 5L
+- min_weight: float >= 0 default=1.0,
+- rowsample: float [0,1] default=1.0
+- colsample: float [0,1] default=1.0
 
 # Getting started
 
-``` r
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(EvoTrees)
+library(ggplot2)
+library(xgboost)
+```
+
+```{r}
+
 x <- runif(10000, -10, 10)
 y <- sin(x) * 0.5 + 0.5
 y <- log(y/(1-y)) + rnorm(length(y))
@@ -46,6 +56,15 @@ params <- list(max_depth = 4, eta = 0.05, subsample = 0.5, colsample_bytree = 1.
 xgb_train <- xgb.DMatrix(data = data_train, label = target_train)
 model <- xgb.train(data = xgb_train, params = params, nrounds = 200, verbose = 1, print_every_n = 10L, early_stopping_rounds = NULL)
 pred_xgb <- predict(model, xgb_train)
+
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+```{r, echo=FALSE}
+data <- data.frame(x = x, y = y, pred_linear = pred_linear, pred_logistic = pred_logistic)
+ggplot() + geom_point(aes(x=x, y=y), col = "gray", size = 0.5) +
+  geom_line(aes(x=x, y=pred_linear, col = "linear"), size = 1) +
+  geom_line(aes(x=x, y=pred_logistic, col = "logistic"), size = 1) +
+  geom_line(aes(x=x, y=pred_xgb, col = "xgb"), size = 1) +
+  ggtitle("EvoTree with L2 and Gamma regularization")
+```
+

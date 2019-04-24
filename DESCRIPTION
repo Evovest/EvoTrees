@@ -2,11 +2,11 @@ Package: EvoTrees
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Author: Jeremie DB
+Maintainer: Jeremie DB <jeremie.db@evovest.com>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:

@@ -8,7 +8,8 @@ set_params <- function(loss="linear",
                        max_depth=5L,
                        min_weight=1.0,
                        rowsample=1.0,
-                       colsample=1.0) {
+                       colsample=1.0,
+                       ...) {
 
   params <- JuliaCall::julia_call("Params",
                                   as.symbol(loss),

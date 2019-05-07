@@ -9,6 +9,7 @@ set_params <- function(loss="linear",
                        min_weight=1.0,
                        rowsample=1.0,
                        colsample=1.0,
+                       nbins=250,
                        ...) {
 
   params <- JuliaCall::julia_call("Params",
@@ -21,6 +22,7 @@ set_params <- function(loss="linear",
                                   as.numeric(min_weight),
                                   as.numeric(rowsample),
                                   as.numeric(colsample),
+                                  as.integer(nbins),
                                   need_return = "Julia")
   return(params)
 }

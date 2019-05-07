@@ -2,22 +2,20 @@ library(EvoTrees)
 library(ggplot2)
 library(xgboost)
 
-x <- runif(10000, -10, 10)
-y <- sin(x) * 0.5 + 0.5
-y <- log(y/(1-y)) + rnorm(length(y))
-y <- 1 / (1 + exp(-y))
+nrows <- 100000
+ncols = 100
+x <- matrix(runif(nrows * ncols), nrow = nrows)
+y <- runif(nrows)
 target_train <- y
-data_train <- matrix(x)
-# data_train <- matrix(round(x - min(x) / (max(x) - min(x)) * 255))
-# mode(data_train) <- "integer"
+data_train <- x
 
 # no regularisation
-params <- list(nthreads = 8,max_depth = 5, eta = 0.05,subsample = 0.5, colsample_bytree = 1.0, min_child_weight = 1, lambda = 0, alpha = 0, gamma = 0,tree_method = "exact", objective = "reg:linear")
+params <- list(nthreads = 8,max_depth = 5, eta = 0.05,subsample = 0.5, colsample_bytree = 1.0, min_child_weight = 1, lambda = 0, alpha = 0, gamma = 0,tree_method = "hist", objective = "reg:linear")
 xgb_train <- xgb.DMatrix(data = data_train, label = target_train)
-system.time(model <- xgb.train(data = xgb_train, params = params, nrounds = 200, verbose = 1, print_every_n = 10L, early_stopping_rounds = NULL))
+system.time(model <- xgb.train(data = xgb_train, params = params, nrounds = 10, verbose = 1, print_every_n = 10L, early_stopping_rounds = NULL))
 pred_xgb <- predict(model, xgb_train)
 
-params <- list(loss = "linear", nrounds = 200, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(loss = "linear", nrounds = 10, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 1, nbins = 250)
 system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params, metric = as.symbol("mae")))
 pred_linear <- predict(model = model, data = data_train)
 

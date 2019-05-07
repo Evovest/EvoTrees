@@ -20,6 +20,7 @@ environment. Then, install EvoTree R package with:
   - min\_weight: float \>= 0 default=1.0,
   - rowsample: float \[0,1\] default=1.0
   - colsample: float \[0,1\] default=1.0
+  - nbins: integer \[2,250\] default=250
 
 # Getting started
 

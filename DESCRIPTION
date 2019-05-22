@@ -1,11 +1,11 @@
 Package: EvoTrees
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.2
+Title: Boosted Trees Methodes
+Version: 0.2.0
 Author: Jeremie DB
 Maintainer: Jeremie DB <jeremie.db@evovest.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Wrapper for EvoTrees.jl
+    Full description at github.com/evovest/EvoTrees and github.com/evovest/EvoTrees.jl
 License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
 LazyData: true

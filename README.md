@@ -11,7 +11,8 @@ environment. Then, install EvoTree R package with:
 
 # Parameters
 
-  - loss: {“linear”, “logistic”, “Poisson”}
+  - loss: {“linear”, “logistic”, “poisson”, “quantile”}
+  - alpha: float, optional, \[0, 1\], set the quantile level
   - nrounds: 10L
   - lambda: 0.0
   - gamma: 0.0
@@ -46,6 +47,11 @@ pred_logistic <- predict(model = model, data = data_train)
 params <- list(loss = "poisson", nrounds = 200, eta = 0.05, lambda = 0.5, gamma = 0.5, max_depth = 5, min_weight = 1, rowsample = 0.5, colsample = 1)
 model <- evo_train(data_train = data_train, target_train = target_train, params = params, metric = as.symbol("none"))
 pred_poisson <- predict(model = model, data = data_train)
+
+# quantile regression - q80
+params <- list(loss = "quantile", alpha=0.8, nrounds = 200, eta = 0.05, lambda = 0.5, gamma = 0.0, max_depth = 5, min_weight = 1, rowsample = 0.5, colsample = 1)
+model <- evo_train(data_train = data_train, target_train = target_train, params = params, metric = as.symbol("none"))
+pred_q80 <- predict(model = model, data = data_train)
 
 # xgboost reference
 params <- list(max_depth = 4, eta = 0.05, subsample = 0.5, colsample_bytree = 1.0, min_child_weight = 1, lambda = 1, alpha = 0, gamma = 1.0, tree_method = "exact", objective = "reg:linear", eval_metric = "rmse")

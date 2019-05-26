@@ -28,7 +28,9 @@ environment. Then, install EvoTree R package with:
 # Getting started
 
 ``` r
-x <- runif(10000, -10, 10)
+# set data
+set.seed(123)
+x <- runif(10000, -6, 6)
 y <- sin(x) * 0.5 + 0.5
 y <- log(y/(1-y)) + rnorm(length(y))
 y <- 1 / (1 + exp(-y))
@@ -59,7 +61,7 @@ table(pred_q80 < target_train) / length(target_train)
 
     ## 
     ##  FALSE   TRUE 
-    ## 0.7958 0.2042
+    ## 0.8035 0.1965
 
 ``` r
 # xgboost reference
@@ -73,7 +75,8 @@ pred_xgb <- predict(model, xgb_train)
 
 ``` r
 # set data
-x <- runif(10000, 0, 5)
+set.seed(123)
+x <- runif(10000, 0, 6)
 y <- sin(x) * 0.5 + 0.5
 y <- log(y/(1-y)) + rnorm(length(y))
 y <- 1 / (1 + exp(-y))
@@ -81,27 +84,27 @@ data_train <- matrix(x)
 target_train <- y
 
 # quantile regression - q50
-params <- list(loss = "quantile", alpha=0.5, nrounds = 200, eta = 0.05, nbins=100, lambda = 0.5, gamma = 0.0, max_depth = 5, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(loss = "quantile", alpha=0.5, nrounds = 200, eta = 0.05, nbins=100, lambda = 1.0, gamma = 0.0, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
 model <- evo_train(data_train = data_train, target_train = target_train, params = params)
 pred_q50 <- predict(model = model, data = data_train)
 
 # quantile regression - q20
-params <- list(loss = "quantile", alpha=0.2, nrounds = 200, eta = 0.05, nbins=100, lambda = 0.5, gamma = 0.0, max_depth = 5, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(loss = "quantile", alpha=0.2, nrounds = 200, eta = 0.05, nbins=100, lambda = 1.0, gamma = 0.0, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
 model <- evo_train(data_train = data_train, target_train = target_train, params = params)
 pred_q20 <- predict(model = model, data = data_train)
 
 # quantile regression - q80
-params <- list(loss = "quantile", alpha=0.8, nrounds = 200, eta = 0.05, nbins=100, lambda = 0.5, gamma = 0.0, max_depth = 5, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(loss = "quantile", alpha=0.8, nrounds = 200, eta = 0.05, nbins=100, lambda = 1.0, gamma = 0.0, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
 model <- evo_train(data_train = data_train, target_train = target_train, params = params)
 pred_q80 <- predict(model = model, data = data_train)
 
 # lightgbm
-params <- list(objective = "quantile", alpha=0.2, eta = 0.05, max_bin=200, l1=0, l2=0.5, min_split_gain = 0.5, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(objective = "quantile", alpha=0.2, eta = 0.05, max_bin=100, l1=0, l2=0.5, min_split_gain = 0.0, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
 dtrain <- lgb.Dataset(data = data_train, label = target_train, free_raw_data = FALSE)
 model <- lightgbm::lgb.train(params = params, data = dtrain, nrounds = 100)
 pred_q20_lgb <- predict(model, data_train)
 
-params <- list(objective = "quantile", alpha=0.8, eta = 0.05, max_bin=200, l1=0, l2=0.5, min_split_gain = 0.5, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
+params <- list(objective = "quantile", alpha=0.8, eta = 0.05, max_bin=100, l1=0, l2=0.5, min_split_gain = 0.0, max_depth = 4, min_weight = 1, rowsample = 0.5, colsample = 1)
 dtrain <- lgb.Dataset(data = data_train, label = target_train, free_raw_data = FALSE)
 model <- lightgbm::lgb.train(params = params, data = dtrain, nrounds = 100)
 pred_q80_lgb <- predict(model, data_train)

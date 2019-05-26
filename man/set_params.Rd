@@ -6,7 +6,7 @@
 \usage{
 set_params(loss = "linear", nrounds = 10L, lambda = 0, gamma = 0,
   eta = 0.1, max_depth = 5L, min_weight = 1, rowsample = 1,
-  colsample = 1, nbins = 50, alpha = 0, ...)
+  colsample = 1, nbins = 50, alpha = 0, metric = "none", ...)
 }
 \description{
 Set EvoTree model parameters

@@ -1,7 +1,7 @@
 Package: EvoTrees
 Type: Package
 Title: Boosted Trees Methodes
-Version: 0.2.0
+Version: 0.2.1
 Author: Jeremie DB
 Maintainer: Jeremie DB <jeremie.db@evovest.com>
 Description: Wrapper for EvoTrees.jl

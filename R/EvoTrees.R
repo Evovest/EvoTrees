@@ -12,6 +12,7 @@ set_params <- function(loss="linear",
                        nbins=50,
                        alpha=0.0,
                        metric="none",
+                       seed=444L,
                        ...) {
 
   params <- JuliaCall::julia_call("EvoTreeRegressorR",
@@ -27,6 +28,7 @@ set_params <- function(loss="linear",
                                   as.integer(nbins),
                                   as.numeric(alpha),
                                   as.symbol(metric),
+                                  as.integer(seed),
                                   need_return = "Julia")
 
   return(params)

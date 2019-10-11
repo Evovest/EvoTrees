@@ -13,8 +13,10 @@ set_params <- function(loss="linear",
                        alpha=0.0,
                        metric="none",
                        seed=444L,
+                       K=1,
                        ...) {
 
+  if (loss == "gaussian") K <- 2
   params <- JuliaCall::julia_call("EvoTreeRegressorR",
                                   as.symbol(loss),
                                   as.integer(nrounds),
@@ -29,6 +31,7 @@ set_params <- function(loss="linear",
                                   as.numeric(alpha),
                                   as.symbol(metric),
                                   as.integer(seed),
+                                  as.integer(K),
                                   need_return = "Julia")
 
   return(params)

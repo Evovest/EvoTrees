@@ -10,13 +10,13 @@ target_train <- y
 data_train <- x
 
 # no regularisation
-params <- list(nthreads = 4, max_depth = 5, eta = 0.05,subsample = 0.5, colsample_bytree = 1.0, min_child_weight = 1, lambda = 0, alpha = 0, gamma = 0, tree_method = "hist", objective = "reg:linear", max_bin=128)
+params <- list(nthreads = 4, max_depth = 5, eta = 0.05,subsample = 0.5, colsample_bytree = 1.0, min_child_weight = 1, lambda = 0, alpha = 0, gamma = 0, tree_method = "hist", objective = "reg:linear", max_bin=16)
 xgb_train <- xgb.DMatrix(data = data_train, label = target_train)
 system.time(model <- xgb.train(data = xgb_train, params = params, nrounds = 10, verbose = 1, print_every_n = 10L, early_stopping_rounds = NULL))
 pred_xgb <- predict(model, xgb_train)
 
-params <- list(loss = "linear", nrounds = 10, eta = 0.05, lambda = 0, gamma = 0.5, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 1, nbins = 32, metric = "mae")
-system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params, print_every_n = 2))
+params <- list(loss = "linear", nrounds = 10, eta = 0.05, lambda = 0, gamma = 0.01, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 1, nbins = 16)
+system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params, print_every_n = 10))
 pred_linear <- predict(model = model, data = data_train)
 
 params <- list(loss = "logistic", nrounds = 200, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 1)

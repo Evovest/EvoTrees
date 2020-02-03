@@ -9,3 +9,4 @@ evo_train(data_train, target_train, params = set_params(), ...)
 \description{
 Train an EvoTree model
 }
+

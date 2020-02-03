@@ -10,14 +10,12 @@ set_params <- function(loss="linear",
                        rowsample=1.0,
                        colsample=1.0,
                        nbins=50,
-                       alpha=0.0,
+                       alpha=0.5,
                        metric="none",
                        seed=444L,
-                       K=1,
                        ...) {
 
-  if (loss == "gaussian") K <- 2
-  params <- JuliaCall::julia_call("EvoTreeRegressorR",
+  params <- JuliaCall::julia_call("EvoTreeRModels",
                                   as.symbol(loss),
                                   as.integer(nrounds),
                                   as.numeric(lambda),
@@ -31,7 +29,6 @@ set_params <- function(loss="linear",
                                   as.numeric(alpha),
                                   as.symbol(metric),
                                   as.integer(seed),
-                                  as.integer(K),
                                   need_return = "Julia")
 
   return(params)
@@ -41,7 +38,7 @@ set_params <- function(loss="linear",
 #' @export
 evo_train <- function(data_train, target_train, params=set_params(), ...) {
   params <- do.call(set_params, params)
-  model <- JuliaCall::julia_call("grow_gbtree", data_train, target_train, params, ..., need_return = "Julia")
+  model <- JuliaCall::julia_call("fit_evotree", params, data_train, target_train, ..., need_return = "Julia")
   return(model)
 }
 

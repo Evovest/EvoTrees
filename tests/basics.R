@@ -79,3 +79,34 @@ ggplot() + geom_point(aes(x=x, y=y), col = "gray", size = 0.5) +
   geom_line(aes(x=x, y=pred_logistic, col = "logistic"), size = 1) +
   geom_line(aes(x=x, y=pred_xgb, col = "xgb"), size = 1) +
   ggtitle("Gamma pruning")
+
+
+
+
+
+##########################################
+# Gaussian
+##########################################
+x <- runif(10000, -2.25, 2.25)
+y <- sin(x) * 0.5 + 0.5
+y <- log(y/(1-y)) + rnorm(length(y))
+y <- 1 / (1 + exp(-y))
+target_train <- y
+data_train <- matrix(x)
+
+params <- list(loss = "gaussian", nrounds=500, eta=0.05, lambda=1, gamma=1.0, max_depth = 6, min_weight = 10, rowsample = 0.5, colsample = 1, nbins=64, metric="gaussian")
+system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params))
+pred_gaussian <- predict(model = model, data = data_train)
+
+q_20 <- qnorm(0.2, mean = pred_gaussian[,1], sd = sqrt(pred_gaussian[,2]))
+q_80 <- qnorm(0.8, mean = pred_gaussian[,1], sd = sqrt(pred_gaussian[,2]))
+mean(y < q_20)
+mean(y < q_80)
+data <- data.frame(x = x, y = y, mean = pred_gaussian[,1], sd = pred_gaussian[,2], q_20, q_80)
+
+ggplot(data) + geom_point(aes(x=x, y=y), col = "gray", size = 0.5) +
+  geom_line(aes(x=x, y=mean, col = "mean"), size = 1) +
+  geom_line(aes(x=x, y=q_20, col = "q20"), size = 1) +
+  geom_line(aes(x=x, y=q_80, col = "q80"), size = 1) +
+  ggtitle("Gaussian")
+

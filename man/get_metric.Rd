@@ -9,3 +9,4 @@ get_metric(model)
 \description{
 Get model best iter and eval metric
 }
+

@@ -31,8 +31,8 @@ params <- list(loss = "logistic", nrounds = 100, eta = 0.05, lambda = 0, max_dep
 system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params))
 system.time(pred_logistic <- predict(model = model, data = data_train))
 
-params <- list(loss = "quantile", alpha = 0.5, nrounds = 100, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 0.5)
-system.time(model <- evo_train(data_train = data_train, target_train = target_train, params = params))
+params <- list(loss = "quantile", alpha = 0.25, nrounds = 100, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 0.5, metric="quantile")
+system.time(model <- evo_train(data_train = data_train, target_train = target_train, X_eval = data_train, Y_eval = target_train, params = params, print_every_n=10))
 system.time(pred_quantile <- predict(model = model, data = data_train))
 
 params <- list(loss = "gaussian", nrounds = 100, eta = 0.05, lambda = 0, max_depth = 6, min_weight = 1, rowsample = 0.5, colsample = 0.5)

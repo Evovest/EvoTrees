@@ -73,3 +73,15 @@ predict.JuliaObject <- function(model, data) {
   pred <- JuliaCall::julia_call("predict", model, data, need_return = "R")
   return(pred)
 }
+
+#' Get prediction from an EvoTree model
+#' @export
+importance <- function(model, var_names) {
+  julia_assign("model", model)
+  julia_assign("vars", var_names)
+  julia_command("imp = importance(model, vars)", show_value = F)
+  julia_command("var_names = [imp[i][1] for i in 1:length(vars)]", show_value = F)
+  julia_command("var_importance = [imp[i][2] for i in 1:length(vars)]", show_value = F)
+  var_importance <- data.frame(var_names = julia_eval("var_names"), gain = julia_eval("var_importance"))
+  return(var_importance)
+}

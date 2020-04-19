@@ -18,7 +18,7 @@ system.time(pred_xgb <- predict(model, xgb_train, ntreelimit = 99))
 # no regularisation - GPU
 params <- list(nthread = 8, max_depth = 5, eta = 0.05, subsample = 0.5, colsample_bytree = 0.5, min_child_weight = 1, lambda = 0, alpha = 0, tree_method = "gpu_hist", objective = "reg:linear", eval_metric = "rmse", max_bin=32)
 system.time(xgb_train <- xgb.DMatrix(data = data_train, label = target_train))
-system.time(model <- xgb.train(data = xgb_train, params = params, nrounds = 10, verbose = 1, print_every_n = 2L, early_stopping_rounds = NULL))
+system.time(model <- xgb.train(data = xgb_train, params = params, nrounds = 100, verbose = 1, print_every_n = 2L, early_stopping_rounds = NULL))
 pred_xgb <- predict(model, xgb_train)
 
 # evotrees

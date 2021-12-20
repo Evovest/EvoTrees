@@ -4,9 +4,14 @@
 \alias{evo_train}
 \title{Train an EvoTree model}
 \usage{
-evo_train(data_train, target_train, params = set_params(), ...)
+evo_train(
+  data_train,
+  target_train,
+  weights_train = NULL,
+  params = set_params(),
+  ...
+)
 }
 \description{
 Train an EvoTree model
 }
-

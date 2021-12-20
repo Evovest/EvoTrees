@@ -9,4 +9,3 @@ best_iter.JuliaObject(model)
 \description{
 Get model best iter and eval metric
 }
-

@@ -1,14 +1,14 @@
 Package: EvoTrees
 Type: Package
 Title: Boosted Trees Methods
-Version: 0.5.2
+Version: 0.9.1
 Author: Jeremie DB
 Maintainer: Jeremie DB <jeremie.db@evovest.com>
-Description: Wrapper for EvoTrees.jl Full description at github.com/evovest/
+Description: Wrapper for EvoTrees.jl. Full description at github.com/evovest/
     EvoTrees and github.com/evovest/EvoTrees.jl
 License: Apache License (== 2.0) | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
     JuliaCall (>= 0.16.4)
-RoxygenNote: 5.0.1
+RoxygenNote: 7.1.1

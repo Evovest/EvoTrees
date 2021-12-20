@@ -13,6 +13,7 @@ set_params <- function(loss="linear",
                        alpha=0.5,
                        metric="none",
                        seed=444L,
+                       device="cpu",
                        ...) {
 
   params <- JuliaCall::julia_call("EvoTreeRModels",
@@ -29,6 +30,7 @@ set_params <- function(loss="linear",
                                   as.numeric(alpha),
                                   as.symbol(metric),
                                   as.integer(seed),
+                                  as.character(device),
                                   need_return = "Julia")
 
   return(params)
@@ -36,9 +38,9 @@ set_params <- function(loss="linear",
 
 #' Train an EvoTree model
 #' @export
-evo_train <- function(data_train, target_train, params=set_params(), ...) {
+evo_train <- function(data_train, target_train, weights_train = NULL, params=set_params(), ...) {
   params <- do.call(set_params, params)
-  model <- JuliaCall::julia_call("fit_evotree", params, data_train, target_train, ..., need_return = "Julia")
+  model <- JuliaCall::julia_call("fit_evotree", params, data_train, target_train, weights_train, ..., need_return = "Julia")
   return(model)
 }
 

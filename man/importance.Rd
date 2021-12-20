@@ -9,4 +9,3 @@ importance(model, var_names)
 \description{
 Get prediction from an EvoTree model
 }
-
